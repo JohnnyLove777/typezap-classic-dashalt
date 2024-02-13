@@ -16,7 +16,7 @@ const sessao = "sendMessage";
 const app = express();
 const server = http.createServer(app);
 
-const port = 7000;
+const port = 8888;
 
 app.use(cors());
 app.use(express.static('public'));
@@ -63,7 +63,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
   const serverQR = http.createServer(appQR);
   const io = socketIo(serverQR);
 
-  const portQR = 7083;
+  const portQR = 8003;
 
   appQR.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/sendMessageQR.html');

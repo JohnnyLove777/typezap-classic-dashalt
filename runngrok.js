@@ -31,7 +31,7 @@ function getNgrokUrl() {
 }
 
 // Inicia o ngrok e obtém o URL
-const ngrokProcess = exec('ngrok http 7000');
+const ngrokProcess = exec('ngrok http 8888');
 
 ngrokProcess.stdout.on('data', (data) => {
   console.log(data); // Opcional: Exibe saída do ngrok no console
