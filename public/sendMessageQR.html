@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticação sendMessage - Johnny Love</title>
+    <link rel="stylesheet" href="index.css"> <!-- Confirme o caminho para o index.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- FontAwesome -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>        
+        document.addEventListener('DOMContentLoaded', () => {
+            const socket = io();
+            const qrCodeContainer = document.getElementById('qrCodeContainer');
+            const statusMessage = document.getElementById('statusMessage');
+
+            // Ícone de carregamento do FontAwesome
+            qrCodeContainer.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            statusMessage.textContent = 'Aguardando Evento...';
+
+            socket.on('qr code', (url) => {
+                qrCodeContainer.innerHTML = `<img src="${url}" alt="QR Code" style="width: 350px; height: 350px; margin: 20px 0;" />`;
+                statusMessage.textContent = 'Escaneie o QR Code com o seu celular: Vá para Ajustes > Aparelhos Conectados > Conectar um dispositivo e aguarde a conexão.';
+            });
+
+            socket.on('connection-ready', (message) => {
+                qrCodeContainer.innerHTML = '<i class="fas fa-check-circle"></i>';
+                statusMessage.textContent = message;
+            });
+
+            socket.on('authenticated', (message) => {
+                qrCodeContainer.innerHTML = '<i class="fas fa-user-check"></i>';
+                statusMessage.textContent = message;
+            });
+
+            socket.on('disconnected', (message) => {
+                qrCodeContainer.innerHTML = '<i class="fas fa-times-circle"></i>';
+                statusMessage.textContent = message;
+            });
+        });
+    </script>
+</head>
+<body style="background-color: #000; color: white; font-family: Arial, sans-serif;">
+    <div id="main-content" style="text-align: center; padding: 80px 20px 20px 20px;">
+        <h1 style="margin-bottom: 20px;">Autenticação da API</h1>        
+        <div id="qrCodeContainer" style="font-size: 48px; margin: 20px 0;"></div> <!-- Ajuste o tamanho do ícone conforme necessário -->
+        <p id="statusMessage" style="margin-top: 20px;">Aguardando Evento...</p>        
+    </div>
+</body>
+</html>
